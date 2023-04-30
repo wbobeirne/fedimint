@@ -14,6 +14,9 @@ import { useGuardianContext } from '../hooks';
 import { GuardianRole, SetupProgress, SETUP_ACTION_TYPE } from '../types';
 import { RoleSelector } from './RoleSelector';
 import { SetConfiguration } from './SetConfiguration';
+import { ConnectGuardians } from './ConnectGuardians';
+import { VerifyGuardians } from './VerifyGuardians';
+import { SetupComplete } from './SetupComplete';
 
 const PROGRESS_ORDER: SetupProgress[] = [
   SetupProgress.Start,
@@ -73,15 +76,18 @@ export const Setup: React.FC = () => {
       subtitle = isHost
         ? 'Share the link with the other Guardians to get everyone on the same page. Once all the Guardians join, you’ll automatically move on to the next step.'
         : 'Get your invite link from your Federation Leader, and paste it below.';
+      content = <ConnectGuardians next={handleNext} />;
       break;
     case SetupProgress.VerifyGuardians:
       title = 'Verify your Guardians';
       subtitle =
         'Ask each Guardian for their verification code, and paste them below to check validity. We’re almost done!';
+      content = <VerifyGuardians next={handleNext} />;
       break;
     case SetupProgress.SetupComplete:
       title = 'Your Federation is now set up!';
       subtitle = 'Get connected and start inviting members.';
+      content = <SetupComplete />;
       break;
     default:
       title = 'Unknown step';
@@ -119,7 +125,9 @@ export const Setup: React.FC = () => {
                 {subtitle}
               </Text>
             </VStack>
-            <Box mt={10}>{content}</Box>
+            <Box mt={10} width='100%'>
+              {content}
+            </Box>
           </VStack>
         </Box>
       </Center>

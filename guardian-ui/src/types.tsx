@@ -25,6 +25,20 @@ export interface Peer {
 
 export interface PeerStatus {
   connected: boolean;
+  approved: boolean;
+}
+
+export enum SocketConnectionStatus {
+  Disconnected = 'Disconnected',
+  Connecting = 'Connecting',
+  Connected = 'Connected',
+  Error = 'Error',
+}
+
+export interface ConsensusConfig {
+  federationName: string;
+  finalityDelay: number;
+  network: Network;
 }
 
 export interface SetupState {
@@ -36,6 +50,8 @@ export interface SetupState {
   network: Network | null;
   password: string;
   numPeers: number;
+  hostServerUrl: string;
+  hostConnectionStatus: SocketConnectionStatus;
   peers: Peer[];
   myVerificationCode: string;
   peerVerificationCodes: string[];
@@ -51,6 +67,8 @@ export enum SETUP_ACTION_TYPE {
   SET_NETWORK = 'SET_NETWORK',
   SET_PASSWORD = 'SET_PASSWORD',
   SET_NUM_PEERS = 'SET_NUM_PEERS',
+  SET_HOST_SERVER_URL = 'SET_HOST_SERVER_URL',
+  SET_HOST_CONNECTION_STATUS = 'SET_HOST_CONNECTION_STATUS',
   SET_PEERS = 'SET_PEERS',
   SET_MY_VERIFICATION_CODE = 'SET_MY_VERIFICATION_CODE',
   SET_PEER_VERIFICATION_CODES = 'SET_PEER_VERIFICATION_CODES',
@@ -89,6 +107,14 @@ export type SetupAction =
   | {
       type: SETUP_ACTION_TYPE.SET_NUM_PEERS;
       payload: number;
+    }
+  | {
+      type: SETUP_ACTION_TYPE.SET_HOST_SERVER_URL;
+      payload: string;
+    }
+  | {
+      type: SETUP_ACTION_TYPE.SET_HOST_CONNECTION_STATUS;
+      payload: SocketConnectionStatus;
     }
   | {
       type: SETUP_ACTION_TYPE.SET_PEERS;
